@@ -31,7 +31,36 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "userHome" */ '../views/UserHome.vue'),
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: ':userId/profile',
+        name: 'myProfile',
+        props: true,
+        component: () => import(/* webpackChunkName: "myProfile" */ '../views/MyProfile.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: ':userId/records',
+        name: 'myRecords',
+        props: true,
+        component: () => import(/* webpackChunkName: "myRecords" */ '../views/MyRecords.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'services',
+        name: 'services',
+        props: true,
+        component: () => import(/* webpackChunkName: "userHome" */ '../views/Services.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
   },
   {
     path: '/login/admin',
@@ -72,8 +101,8 @@ router.beforeEach((to, from, next) => {
     next()
   }
   if (to.meta.requiresAuth) {
-    //send to user login screen
-    if (!store.user) {
+    if (!JSON.parse(localStorage.getItem('user'))) {
+      //send to user login screen
       next({
         name: "userLogin"
       })

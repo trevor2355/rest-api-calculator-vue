@@ -21,9 +21,29 @@ export default {
   },
   methods: {
     login() {
-      console.log("this.username: ", this.username)
-      store.user = this.username
-      this.$router.push("/user")
+      let options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: this.username, password: this.password})
+      }
+      fetch('http://localhost:3000/login', options)
+        .then(response => {
+          if (response.status !== 200) {
+            throw new Error('Invalid Password');
+          }
+          return response.json()
+        })
+        .then(userInfo => {
+          store.user = userInfo
+          localStorage.setItem('user', JSON.stringify(userInfo))
+          this.$router.push("/user")
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      
     }
   }
 }
