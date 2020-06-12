@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-table striped hover :items="items" :fields='fields'>
+    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage">
       <template v-slot:cell(actions)="row">
         <div class='edit-button'>
         <b-button size="sm" @click="info(row.item, row.index, $event.target)" variant='success'>
@@ -58,7 +58,9 @@ export default {
     };
   },
   props: [
-    'records'
+    'records',
+    'perPage',
+    'currentPage'
   ],
   methods: {
     info(item, index, button) {

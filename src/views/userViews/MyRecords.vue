@@ -1,32 +1,47 @@
 <template>
   <div>
     <h1>My Records</h1>
-    <table>
-      <tr>
-        <th>Service</th>
-        <th>Cost</th>
-        <th>User Balance After Service</th>
-        <th>Date</th>
-        <th>Service Response</th>
-      </tr>
-      <tr v-for="record in records" :key="record.id">
-        <th>{{ record.service_id | convertServiceIdToString(services) }}</th>
-        <th>{{ record.cost }}</th>
-        <th>{{ record.user_balance }}</th>
-        <th>{{ record.date | formatDate }}</th>
-        <th>{{ record.service_response }}</th>
-      </tr>
-    </table>
+    <div class='select'>
+      <b-form-group
+        label="Per page"
+        label-size="sm"
+        label-align-sm="right"
+        label-cols-sm="6"
+        label-cols-md="4"
+        label-cols-lg="3"
+        label-for="perPageSelect"
+      >
+        <b-form-select
+          v-model="perPage"
+          id="perPageSelect"
+          :options="pageOptions"
+        ></b-form-select>
+      </b-form-group>
+    </div>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      aria-controls="my-records-table" 
+      align="fill"
+    ></b-pagination>
+    <TheMyRecordsTable :records='records' :key='key' :currentPage="currentPage" :perPage="perPage"></TheMyRecordsTable>
   </div>
 </template>
 <script>
 import moment from 'moment';
+import TheMyRecordsTable from '../../components/TheMyRecordsTable.vue'
 export default {
   data() {
     return {
       records: null,
-      services: null
-    }
+      services: null,
+      key: '1',
+      totalRows: 1,
+      currentPage: 1,
+      perPage: 5,
+      pageOptions: [5, 10, 15],
+  }
   },
   props: {
     userId: {
@@ -46,6 +61,8 @@ export default {
         })
         .then(records => {
           this.records = records;
+          this.totalRows = this.records.length
+          this.key = new Date().toString()
         })
         .catch(err => {
           console.log(err)
@@ -57,7 +74,6 @@ export default {
           return response.json()
         })
         .then(services => {
-          console.log(services)
           this.services = services;
         })
         .catch(err => {
@@ -81,7 +97,21 @@ export default {
       } else {
         return 'date not available'
       }
-    }
+    },
+  },
+  components: {
+    TheMyRecordsTable
   }
 }
 </script>
+<style>
+h1 {
+  padding: 8px 0
+}
+.select {
+  padding: 0 40%
+}
+.pagination {
+  padding: 0 30%
+}
+</style>

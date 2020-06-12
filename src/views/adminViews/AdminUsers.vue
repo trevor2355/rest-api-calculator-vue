@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h2>Users</h2>
+  <span class='button'>
   <b-button 
     :to="{
         name: 'adminUsersManage',
@@ -8,6 +8,8 @@
     variant='danger'>
       Manage Users
   </b-button>
+  </span>
+  <span class='button'>
   <b-button 
     :to="{
       name: 'adminUsersBalance',
@@ -15,6 +17,7 @@
     variant='danger'>
       Manage User Balances
   </b-button>
+  </span>
   <router-view></router-view>
 </div>
 </template>
@@ -26,3 +29,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.button {
+  margin: 8px;
+}
+</style>
