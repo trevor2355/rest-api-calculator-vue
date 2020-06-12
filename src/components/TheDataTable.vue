@@ -15,7 +15,7 @@
       </template>
     </b-table>
     <TheEditModal :infoModal="infoModal" :key="infoModal.id" @reset-infoModal="resetInfoModal" @get-all-records='getAllRecords'/>
-    <TheDeleteModal key='deleteModal' :recordId='deleteRecordId' @get-all-records='getAllRecords'/>
+    <TheDeleteModal key='deleteModal' :recordId='deleteRecordId' :username='deleteRecordId' :entity='entity' @get-all-records='getAllRecords'/>
   </b-container>
 </template>
 <script>
@@ -24,7 +24,6 @@ import TheEditModal from './TheEditModal.vue'
 import TheDeleteModal from './TheDeleteModal.vue'
 export default {
   data() {
-    console.log('new Records: ')
     return {
       items: this.records,
       fields: [
@@ -54,7 +53,8 @@ export default {
         title: '',
         content: ''
       },
-      deleteRecordId: null
+      deleteRecordId: null,
+      entity: 'record',
     };
   },
   props: [

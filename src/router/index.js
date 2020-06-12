@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import store from '../store'
+// import AdminUsersBalance from '../views/adminViews/AdminUsersBalance.vue';
+// import AdminUsersManage from '../views/adminViews/AdminUsersManage.vue';
 
 Vue.use(VueRouter)
 
@@ -47,7 +49,27 @@ Vue.use(VueRouter)
         component: () => import(/* webpackChunkName: "adminUsers" */ '../views/adminViews/AdminUsers.vue'),
         meta: {
           requiresAdminAuth: true
-        }
+        },
+        children: [
+          {
+            path: 'balance',
+            name: 'adminUsersBalance',
+            props: true,
+            component: () => import(/* webpackChunkName: "adminUsersBalance" */ '../views/adminViews/AdminUsersBalance.vue'),
+            meta: {
+              requiresAdminAuth: true
+            }
+          },
+          {
+            path: 'manage',
+            name: 'adminUsersManage',
+            props: true,
+            component: () => import(/* webpackChunkName: "adminUsersMange" */ '../views/adminViews/AdminUsersManage.vue'),
+            meta: {
+              requiresAdminAuth: true
+            }
+          }
+        ]
       }
     ]
   },

@@ -1,5 +1,5 @@
 <template>
-  <b-modal id='deleteModal' :title="'Delete Record: ' + recordId" ok-variant='danger' ok-title='Delete' @ok='handleDelete'>
+  <b-modal id='deleteModal' :title="'Delete ' + entity + ': ' + username" ok-variant='danger' ok-title='Delete' @ok='handleDelete'>
   
   </b-modal>
 </template>
@@ -11,7 +11,9 @@ export default {
     }
   },
   props: [
-    'recordId'
+    'recordId',
+    'username',
+    'entity'
   ],
   methods: {
     handleDelete() {
@@ -19,23 +21,23 @@ export default {
         .then(update => {
           update
           this.getAllRecords()
-          alert('Successfully Deleted Record: ' + this.recordId) 
+          alert(`Successfully Deleted ${this.entity}: ${this.username}`) 
         })
         .catch(err => {
           console.log(err)
-          alert('There was an error Deleting Record: ' + this.recordId)
+          alert(`There was an error Deleting ${this.entity}: ${this.recordId}`)
         }) 
     },
     async deleteRecord() {
       let options = {
         method: 'DELETE'
       }
-      let response = await fetch(`http://localhost:3000/api/records/${this.recordId}`, options)
+      let response = await fetch(`http://localhost:3000/api/${this.entity}s/${this.recordId}`, options)
       let update = await response.json();
       return update;
     },
     getAllRecords() {
-      this.$emit('get-all-records')
+      this.$emit(`get-all-${this.entity}s`)
     }
   }
 }
