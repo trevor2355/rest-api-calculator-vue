@@ -1,16 +1,22 @@
 <template>
   <div>
     <h3>Manage Users</h3>
+    <b-button size="sm" @click="openAddUserModal" variant='primary'>
+          Add User +
+    </b-button>
     <TheUserManageTable :users='users' :key='key' @get-all-users='getAllUsers'></TheUserManageTable>
+    <TheAddUserModal key='addUserModal' :id='key' :entity='entity' @get-all-users='getAllUsers'/>
   </div>
 </template>
 <script>
 import TheUserManageTable from '../../components/TheUserManageTable.vue';
+import TheAddUserModal from '../../components/TheAddUserModal.vue';
 export default {
   data() {
     return {
       users: null,
-      key: '1'
+      key: '1',
+      entity: 'user'
     }
   },
   created() {
@@ -29,10 +35,14 @@ export default {
         .catch(err => {
           console.log(err)
         })
-    }
+    },
+    openAddUserModal() {
+      this.$bvModal.show(this.key);
+    },
   },
   components: {
-    TheUserManageTable
+    TheUserManageTable,
+    TheAddUserModal,
   }
 }
 </script>

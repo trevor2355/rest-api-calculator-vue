@@ -5,7 +5,7 @@
   <b-nav tabs>
     <b-nav-item 
       :to="{
-          name: 'adminUsers',
+          name: 'adminUsersManage',
           params: { userId: adminUser.id }
         }"
         variant='info'>
@@ -18,6 +18,14 @@
         }"
         variant='info'>
         Records
+    </b-nav-item>
+    <b-nav-item
+      :to="{
+          name: 'adminServices',
+          params: { userId: adminUser.id}
+        }"
+        variant='info'>
+        Services
     </b-nav-item>
   </b-nav>
   <router-view></router-view>

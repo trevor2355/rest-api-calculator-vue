@@ -39,7 +39,7 @@ export default {
         .then(userInfo => {
           store.adminUser = userInfo
           localStorage.setItem('adminUser', JSON.stringify(userInfo))
-          this.$router.push("/admin")
+          this.$router.push(`/admin/${userInfo.id}/users/manage`)
         })
         .catch(err => {
           console.log(err)
