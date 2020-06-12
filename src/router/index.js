@@ -17,10 +17,39 @@ Vue.use(VueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "adminHome" */ '../views/AdminHome.vue'),
+    component: () => import(/* webpackChunkName: "adminHome" */ '../views/adminViews/AdminHome.vue'),
     meta: {
       requiresAdminAuth: true
-    }
+    },
+    children: [
+      {
+        path: ':userId/records',
+        name: 'adminRecords',
+        props: true,
+        component: () => import(/* webpackChunkName: "adminRecords" */ '../views/adminViews/AdminRecords.vue'),
+        meta: {
+          requiresAdminAuth: true
+        }
+      },
+      {
+        path: ':userId/services',
+        name: 'adminServices',
+        props: true,
+        component: () => import(/* webpackChunkName: "adminServices" */ '../views/adminViews/AdminServices.vue'),
+        meta: {
+          requiresAdminAuth: true
+        }
+      },
+      {
+        path: ':userId/users',
+        name: 'adminUsers',
+        props: true,
+        component: () => import(/* webpackChunkName: "adminUsers" */ '../views/adminViews/AdminUsers.vue'),
+        meta: {
+          requiresAdminAuth: true
+        }
+      }
+    ]
   },
   {
     path: '/user',
@@ -28,7 +57,7 @@ Vue.use(VueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "userHome" */ '../views/UserHome.vue'),
+    component: () => import(/* webpackChunkName: "userHome" */ '../views/userViews/UserHome.vue'),
     meta: {
       requiresAuth: true
     },
@@ -37,7 +66,7 @@ Vue.use(VueRouter)
         path: ':userId/profile',
         name: 'myProfile',
         props: true,
-        component: () => import(/* webpackChunkName: "myProfile" */ '../views/MyProfile.vue'),
+        component: () => import(/* webpackChunkName: "myProfile" */ '../views/userViews/MyProfile.vue'),
         meta: {
           requiresAuth: true
         }
@@ -46,7 +75,7 @@ Vue.use(VueRouter)
         path: ':userId/records',
         name: 'myRecords',
         props: true,
-        component: () => import(/* webpackChunkName: "myRecords" */ '../views/MyRecords.vue'),
+        component: () => import(/* webpackChunkName: "myRecords" */ '../views/userViews/MyRecords.vue'),
         meta: {
           requiresAuth: true
         }
@@ -55,7 +84,7 @@ Vue.use(VueRouter)
         path: 'services',
         name: 'services',
         props: true,
-        component: () => import(/* webpackChunkName: "userHome" */ '../views/Services.vue'),
+        component: () => import(/* webpackChunkName: "services" */ '../views/userViews/Services.vue'),
         meta: {
           requiresAuth: true
         }
@@ -68,7 +97,7 @@ Vue.use(VueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "adminLogin" */ '../views/AdminLogin.vue')
+    component: () => import(/* webpackChunkName: "adminLogin" */ '../views/adminViews/AdminLogin.vue')
   },
   {
     path: '/login/user',
@@ -76,7 +105,7 @@ Vue.use(VueRouter)
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "userLogin" */ '../views/UserLogin.vue')
+    component: () => import(/* webpackChunkName: "userLogin" */ '../views/userViews/UserLogin.vue')
   }
 ]
 
@@ -89,7 +118,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAdminAuth) {
     //send to admin login screen
-    if (!store.adminUser) {
+    if (!JSON.parse(localStorage.getItem('adminUser'))) {
       console.log('store: ', store)
       next({
         name: "adminLogin"

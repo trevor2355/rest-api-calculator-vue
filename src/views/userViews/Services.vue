@@ -58,6 +58,8 @@
       <div>
         <h3>Random String</h3>
         <p>Cost: {{ 'random string generator' | findCostOfService(services) }}</p>
+        <label for="val1">Length (1-32)</label>
+        <input v-model="generateRandomStringVal" type="number" name="generateRandomStringVal" class="input">
         <button @click="generateRandomString" :disabled='randomStringGeneratorDisabled'>Request Service</button>
         <span v-if='randomStringGeneratorResult'>{{ randomStringGeneratorResult }}</span>
       </div>
@@ -80,6 +82,7 @@ export default {
       divisionVal1: null,
       divisionVal2: null,
       squareRootVal: null,
+      generateRandomStringVal: null,
       additionResult: null,
       subtractionResult: null,
       multiplicationResult: null,
@@ -168,7 +171,28 @@ export default {
       this.handleServiceRequest('square-root', this.squareRootResult);
     },
     generateRandomString() {
-
+      let length = this.generateRandomStringVal;
+      let options = {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({ length })
+      }
+      fetch('http://localhost:3000/api/services/randomstringgenerator', options)
+        .then(response => {
+          if (response.status !== 200) {
+            throw new Error('Length not within valid range')
+          }
+          return response.json()
+        })
+        .then(string => {
+          this.randomStringGeneratorResult = string.string
+          this.handleServiceRequest('random string generator', this.randomStringGeneratorResult);
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     handleServiceRequest(serviceType, serviceResult) {
       let serviceInfo = this.findCostAndId(serviceType)

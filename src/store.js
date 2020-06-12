@@ -5,8 +5,15 @@ if (!savedUserInfo) {
   }
 }
 
+let savedAdminUserInfo = JSON.parse(localStorage.getItem('adminUser'));
+if (!savedUserInfo) {
+  savedUserInfo = {
+    username: ''
+  }
+}
+
 export default {
   user: savedUserInfo,
-  adminUser: null,
+  adminUser: savedAdminUserInfo,
   username: null
 }
