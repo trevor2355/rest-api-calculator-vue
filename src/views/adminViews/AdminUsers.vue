@@ -1,11 +1,14 @@
 <template>
 <div>
+  <div class=buttons>
   <span class='button'>
   <b-button 
     :to="{
         name: 'adminUsersManage',
       }"
-    variant='danger'>
+    variant='outline-secondary' 
+    sz='lg' 
+    exact exact-active-class="active">
       Manage Users
   </b-button>
   </span>
@@ -14,10 +17,13 @@
     :to="{
       name: 'adminUsersBalance',
     }"
-    variant='danger'>
+    variant='outline-secondary' 
+    sz='lg' 
+    exact exact-active-class="active">
       Manage User Balances
   </b-button>
   </span>
+  </div>
   <router-view></router-view>
 </div>
 </template>
@@ -32,5 +38,9 @@ export default {
 <style scoped>
 .button {
   margin: 8px;
+}
+.buttons {
+  margin-top: 16px;
+  margin-bottom: 24px;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>Services</h1>
-    <p>User Balance: {{ userBalance }}</p>
+    <div class='line'></div>
+    <h5>User Balance: {{ userBalance }}</h5>
     <div>
       <div>
         <h3>addition</h3>
@@ -11,8 +12,8 @@
         <span>+</span>
         <label for="val2"></label>
         <input v-model="additionVal2" type="number" name="additionVal2" class="input">
-        <button @click="add" :disabled='additionSubtractionDisabled'>Request Service</button>
-        <span v-if='additionResult || additionResult === 0'>{{ additionResult }}</span>
+        <b-button @click="add" :disabled='additionSubtractionDisabled'>Request Service</b-button>
+        <span v-if='additionResult || additionResult === 0'>= {{ additionResult }}</span>
       </div>
       <div>
         <h3>subtraction</h3>
@@ -22,8 +23,8 @@
         <span>-</span>
         <label for="val2"></label>
         <input v-model="subtractionVal2" type="number" name="subtractionVal2" class="input">
-        <button @click="subtract" :disabled='additionSubtractionDisabled'>Request Service</button>
-        <span v-if='subtractionResult ||subtractionResult === 0'>{{ subtractionResult }}</span>       
+        <b-button @click="subtract" :disabled='additionSubtractionDisabled'>Request Service</b-button>
+        <span v-if='subtractionResult || subtractionResult === 0'>= {{ subtractionResult }}</span>       
       </div>
       <div>
         <h3>multiplication</h3>
@@ -33,8 +34,8 @@
         <span>x</span>
         <label for="val2"></label>
         <input v-model="multiplicationVal2" type="number" name="multiplicationVal2" class="input">
-        <button @click="multiply" :disabled='multiplicationDivisionDisabled'>Request Service</button>
-        <span v-if='multiplicationResult'>{{ multiplicationResult }}</span>
+        <b-button @click="multiply" :disabled='multiplicationDivisionDisabled'>Request Service</b-button>
+        <span v-if='multiplicationResult || multiplicationResult === 0'>= {{ multiplicationResult }}</span>
       </div>
       <div>
         <h3>division</h3>
@@ -44,23 +45,23 @@
         <span>/</span>
         <label for="val2"></label>
         <input v-model="divisionVal2" type="number" name="divisionVal2" class="input">
-        <button @click="divide" :disabled='multiplicationDivisionDisabled'>Request Service</button>
-        <span v-if='divisionResult'>{{ divisionResult }}</span>
+        <b-button @click="divide" :disabled='multiplicationDivisionDisabled'>Request Service</b-button>
+        <span v-if='divisionResult || divisionResult === 0'>= {{ divisionResult }}</span>
       </div>
       <div>
         <h3>square root</h3>
         <p>Cost: {{ 'square-root' | findCostOfService(services) }}</p>
         <label for="val1"></label>
         <input v-model="squareRootVal" type="number" name="squareRootVal" class="input">
-        <button @click="squareRoot" :disabled='squareRootDisabled'>Request Service</button>
-        <span v-if='squareRootResult'>{{ squareRootResult }}</span>
+        <b-button @click="squareRoot" :disabled='squareRootDisabled'>Request Service</b-button>
+        <span v-if='squareRootResult || squareRootResult === 0'>{{ squareRootResult }}</span>
       </div>
       <div>
         <h3>Random String</h3>
         <p>Cost: {{ 'random string generator' | findCostOfService(services) }}</p>
         <label for="val1">Length (1-32)</label>
         <input v-model="generateRandomStringVal" type="number" name="generateRandomStringVal" class="input">
-        <button @click="generateRandomString" :disabled='randomStringGeneratorDisabled'>Request Service</button>
+        <b-button @click="generateRandomString" :disabled='randomStringGeneratorDisabled'>Request Service</b-button>
         <span v-if='randomStringGeneratorResult'>{{ randomStringGeneratorResult }}</span>
       </div>
     </div>
@@ -247,3 +248,22 @@ export default {
   }
 }
 </script>
+<style scoped>
+span {
+  padding: 8px;
+  font-size: 20px;
+  font-weight: 800;
+}
+input {
+  height: 32px;
+}
+.line {
+  border-top: 1px solid rgb(180, 180, 180);
+  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 16px;
+}
+.btn {
+  margin: 8px;
+}
+</style>

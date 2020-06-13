@@ -1,8 +1,9 @@
 <template>
   <div>
     <h1>My Profile</h1>
+    <div class='line'></div>
     <ul>
-      <li>Email: {{ user.username }}</li>
+      <li>Username (email): {{ user.username }}</li>
       <li>Balance: {{ user.balance }}</li>
       <li>Role: {{ user.role }}</li>
       <li>Status: {{ user.status }}</li>
@@ -42,3 +43,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  font-size: 24px;
+  padding: 12px;
+}
+.line {
+  border-top: 1px solid rgb(180, 180, 180);
+  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 16px;
+}
+</style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>Users Balance</h3>
     <div class='flex-container'>
       <div class='flex-item'>
         <b-form-group

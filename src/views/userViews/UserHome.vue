@@ -1,14 +1,15 @@
 <template>
 <div>
-  <p>User: {{ user.username }}</p>
-  <b-button @click='logout' variant='danger' sz='sm'>Logout</b-button>
+  <p class='user'>User: {{ user.username }}</p>
+  <b-button class='logout' @click='logout' variant='danger' sz='sm'>Logout</b-button>
   <b-nav tabs>
     <b-nav-item 
       :to="{
           name: 'myProfile',
           params: { userId: user.id }
         }"
-        variant='info'>
+        variant='info' 
+        exact exact-active-class="active">
         My Profile
     </b-nav-item>
     <b-nav-item
@@ -16,7 +17,8 @@
           name: 'myRecords',
           params: { userId: user.id}
         }"
-        variant='info'>
+        variant='info' 
+        exact exact-active-class="active">
         My Records
     </b-nav-item>
     <b-nav-item
@@ -24,7 +26,8 @@
           name: 'services',
           params: {}
         }"
-        variant='info'>
+        variant='info'
+        exact exact-active-class="active">
         Request a Service
     </b-nav-item>
   </b-nav>
@@ -49,3 +52,22 @@ methods: {
 }
 }
 </script>
+<style scoped>
+.logout {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+}
+.user {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 16px;
+  margin-right: 16px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+.nav {
+  margin: 48px 0 24px 0
+}
+</style>

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h3>Manage Users</h3>
-    <b-button size="sm" @click="openAddUserModal" variant='primary'>
+    <b-button size="sm" @click="openAddUserModal" variant='primary' class='addUser'>
           Add User +
     </b-button>
       <div class='flex-container'>
@@ -132,8 +131,11 @@ export default {
 }
 </script>
 <style scoped>
-h3 {
+h2 {
   margin: 8px;
+}
+.addUser {
+  margin-bottom: 16px;
 }
 .flex-container {
   display: grid;
