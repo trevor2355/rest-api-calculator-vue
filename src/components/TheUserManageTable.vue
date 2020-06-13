@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-table striped hover :items="items" :fields='fields'>
+    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage" :filter='filter' :filterIncludedFields='filterIncludedFields' @filtered='onFiltered'>
       <template v-slot:cell(actions)="row">
         <div class='edit-button'>
         <b-button size="sm" @click="edit(row.item)" variant='success'>
@@ -25,15 +25,15 @@ export default {
   data() {
     return {
       items: this.users,
-      fields: [
-        { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-        { key: 'uuid', label: 'UUID', sortable: true, sortDirection: 'desc' },
-        { key: 'username', label: 'Email', sortable: true, sortDirection: 'desc' },
-        { key: 'balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
-        { key: 'role', label: 'User Role', sortable: true, sortDirection: 'desc' },
-        { key: 'status', label: 'User Status', sortable: true, sortDirection: 'desc' },
-        { key: 'actions', label: 'Actions' }
-      ],
+      // fields: [
+      //   { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
+      //   { key: 'uuid', label: 'UUID', sortable: true, sortDirection: 'desc' },
+      //   { key: 'username', label: 'Email', sortable: true, sortDirection: 'desc' },
+      //   { key: 'balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
+      //   { key: 'role', label: 'User Role', sortable: true, sortDirection: 'desc' },
+      //   { key: 'status', label: 'User Status', sortable: true, sortDirection: 'desc' },
+      //   { key: 'actions', label: 'Actions' }
+      // ],
       editModal: {
         id: '',
         title: '',
@@ -45,7 +45,12 @@ export default {
     };
   },
   props: [
-    'users'
+    'users',
+    'fields',
+    'perPage',
+    'currentPage',
+    'filter',
+    'filterIncludedFields'
   ],
   methods: {
     edit(item) {
@@ -69,6 +74,9 @@ export default {
     },
     getAllUsers() {
       this.$emit('get-all-users')
+    },
+    onFiltered(filteredItems) {
+      this.$emit('filtered', filteredItems)
     }
   },
   components: {

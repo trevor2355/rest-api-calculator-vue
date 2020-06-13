@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage">
+    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage" :filter='filter' :filterIncludedFields='filterIncludedFields' @filtered='onFiltered'>
       <template v-slot:cell(actions)="row">
         <div class='edit-button'>
         <b-button size="sm" @click="info(row.item, row.index, $event.target)" variant='success'>
@@ -19,35 +19,12 @@
   </b-container>
 </template>
 <script>
-import moment from 'moment';
 import TheEditModal from './TheEditModal.vue'
 import TheDeleteModal from './TheDeleteModal.vue'
 export default {
   data() {
     return {
       items: this.records,
-      fields: [
-        { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-        { key: 'uuid', label: 'UUID', sortable: true, class: 'text-center' },
-        { key: 'service_id', label: 'Service ID', sortable: true,
-          // sortByFormatted: true,
-          // filterByFormatted: true
-        },
-        { key: 'user_id', label: 'User ID', sortable: true, sortDirection: 'desc' },
-        { key: 'cost', label: 'Cost', sortable: true, sortDirection: 'desc' },
-        { key: 'user_balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
-        { key: 'service_response', label: 'Service Response', sortable: true, sortDirection: 'desc' },
-        { 
-          key: 'date', 
-          label: 'Date', 
-          sortable: true, 
-          sortDirection: 'desc',
-          formatter: (value) => {
-          return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss")
-          }
-        },
-        { key: 'actions', label: 'Actions' }
-      ],
       infoModal: {
         id: 'info-modal',
         title: '',
@@ -59,8 +36,11 @@ export default {
   },
   props: [
     'records',
+    'fields',
     'perPage',
-    'currentPage'
+    'currentPage',
+    'filter',
+    'filterIncludedFields'
   ],
   methods: {
     info(item, index, button) {
@@ -82,6 +62,9 @@ export default {
     },
     getAllRecords() {
       this.$emit('get-all-records')
+    },
+    onFiltered(filteredItems) {
+      this.$emit('filtered', filteredItems)
     }
   },
   components: {

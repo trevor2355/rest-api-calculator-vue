@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage">
+    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage" :filter='filter' :filterIncludedFields='filterIncludedFields' @filtered='onFiltered'>
       <template v-slot:cell(actions)="row">
         <div class='edit-button'>
         <b-button size="sm" @click="edit(row.item)" variant='success'>
@@ -19,12 +19,6 @@ export default {
     console.log('New Users: ', this.users)
     return {
       items: this.users,
-      fields: [
-        { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-        { key: 'username', label: 'Email', sortable: true, sortDirection: 'desc' },
-        { key: 'balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
-        { key: 'actions', label: 'Actions' }
-      ],
       editModal: {
         id: '',
         title: '',
@@ -34,8 +28,11 @@ export default {
   },
   props: [
     'users',
+    'fields',
     'perPage',
-    'currentPage'
+    'currentPage',
+    'filter',
+    'filterIncludedFields'
   ],
   methods: {
     edit(item) {
@@ -53,6 +50,9 @@ export default {
     },
     getAllUsers() {
       this.$emit('get-all-users')
+    },
+    onFiltered(filteredItems) {
+      this.$emit('filtered', filteredItems)
     }
   },
   components: {

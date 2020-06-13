@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage">
+    <b-table striped hover :items="items" :fields='fields' :current-page="currentPage" :per-page="perPage" :filter='filter' :filterIncludedFields='filterIncludedFields' @filtered='onFiltered'>
       <template v-slot:cell(actions)="row">
         <div class='edit-button'>
         <b-button size="sm" @click="edit(row.item)" variant='success'>
@@ -25,14 +25,6 @@ export default {
   data() {
     return {
       items: this.services,
-      fields: [
-        { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-        { key: 'uuid', label: 'UUID', sortable: true, sortDirection: 'desc' },
-        { key: 'type', label: 'Type', sortable: true, sortDirection: 'desc' },
-        { key: 'cost', label: 'Cost', sortable: true, sortDirection: 'desc' },
-        { key: 'status', label: 'Status', sortable: true, sortDirection: 'desc' },
-        { key: 'actions', label: 'Actions' }
-      ],
       editModal: {
         id: '',
         title: '',
@@ -45,8 +37,11 @@ export default {
   },
   props: [
     'services',
+    'fields',
     'perPage',
-    'currentPage'
+    'currentPage',
+    'filter',
+    'filterIncludedFields'
   ],
   methods: {
     edit(item) {
@@ -70,6 +65,9 @@ export default {
     },
     getAllServices() {
       this.$emit('get-all-services')
+    },
+    onFiltered(filteredItems) {
+      this.$emit('filtered', filteredItems)
     }
   },
   components: {
