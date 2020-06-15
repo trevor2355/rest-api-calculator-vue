@@ -106,6 +106,7 @@ export default {
       let options = {
         method: 'PUT',
         headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
           'content-type': 'application/json'
         },
         body: JSON.stringify(this.form)

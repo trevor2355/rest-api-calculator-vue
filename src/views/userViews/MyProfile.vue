@@ -29,7 +29,14 @@ export default {
   },
   methods: {
     getUser() {
-      fetch(`http://localhost:3000/api/users/${this.userId}`)
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+        }
+      }
+      fetch(`http://localhost:3000/api/users/${this.userId}`, options)
         .then(response => {
           return response.json()
         })

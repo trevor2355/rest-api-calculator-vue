@@ -54,7 +54,6 @@ export default {
   ],
   methods: {
     edit(item) {
-      console.log('item: ', item)
       this.editModal.id = item.id.toString()
       this.editModal.content = item;
       // this.$bvModal.show(this.editModal.id)

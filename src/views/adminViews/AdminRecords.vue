@@ -107,7 +107,14 @@ export default {
   },
   methods: {
     getAllRecords() {
-      fetch('http://localhost:3000/api/records')
+      let options = {
+        method: 'GET',
+        headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:3000/api/records', options)
         .then(response => {
           return response.json()
         })

@@ -96,7 +96,14 @@ export default {
   },
   methods: {
     getAllUsers() {
-      fetch('http://localhost:3000/api/users')
+      let options = {
+        method: 'GET',
+        headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:3000/api/users', options)
         .then(response => {
           return response.json()
         })

@@ -30,7 +30,11 @@ export default {
     },
     async deleteRecord() {
       let options = {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
+          'Content-Type': 'application/json'
+        }
       }
       let response = await fetch(`http://localhost:3000/api/${this.entity}s/${this.recordId}`, options)
       let update = await response.json();

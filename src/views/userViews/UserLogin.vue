@@ -36,14 +36,15 @@ export default {
           return response.json()
         })
         .then(userInfo => {
-          store.user = userInfo
-          localStorage.setItem('user', JSON.stringify(userInfo))
-          this.$router.push(`/user/${userInfo.id}/profile`)
+          store.user = userInfo.user
+          console.log('userInfo: ', userInfo)
+          localStorage.setItem('user', JSON.stringify(userInfo.user))
+          localStorage.setItem('JSWT', JSON.stringify(userInfo.token))
+          this.$router.push(`/user/${userInfo.user.id}/profile`)
         })
         .catch(err => {
           console.log(err)
         })
-      
     }
   }
 }

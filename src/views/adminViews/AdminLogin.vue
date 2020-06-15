@@ -31,14 +31,14 @@ export default {
       fetch('http://localhost:3000/login', options)
         .then(response => {
           if (response.status !== 200) {
-            console.log(response.headers)
             throw new Error();
           }
           return response.json()
         })
         .then(userInfo => {
-          store.adminUser = userInfo
-          localStorage.setItem('adminUser', JSON.stringify(userInfo))
+          store.adminUser = userInfo.user
+          localStorage.setItem('JSWT', JSON.stringify(userInfo.token))
+          localStorage.setItem('adminUser', JSON.stringify(userInfo.user))
           this.$router.push(`/admin/${userInfo.id}/users/manage`)
         })
         .catch(err => {

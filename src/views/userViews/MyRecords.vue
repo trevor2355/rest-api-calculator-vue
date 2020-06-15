@@ -114,7 +114,14 @@ export default {
   },
   methods: {
     getRecords() {
-      fetch(`http://localhost:3000/api/users/${this.userId}/records`)
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+        }
+      }
+      fetch(`http://localhost:3000/api/users/${this.userId}/records`, options)
         .then(response => {
           return response.json()
         })
@@ -128,7 +135,14 @@ export default {
         })
     },
     getServices() {
-      fetch('http://localhost:3000/api/services')
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+        }
+      }
+      fetch('http://localhost:3000/api/services', options)
         .then(response => {
           return response.json()
         })

@@ -16,7 +16,6 @@
 import TheEditBalanceModal from './TheEditBalanceModal.vue'
 export default {
   data() {
-    console.log('New Users: ', this.users)
     return {
       items: this.users,
       editModal: {

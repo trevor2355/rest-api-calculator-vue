@@ -98,7 +98,14 @@ export default {
   },
   methods: {
     getAllServices() {
-      fetch('http://localhost:3000/api/services')
+      let options = {
+        method: 'GET',
+        headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch('http://localhost:3000/api/services', options)
         .then(response => {
           return response.json()
         })

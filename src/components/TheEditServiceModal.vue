@@ -42,12 +42,12 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-3"
+        id="input-group-4"
         label="Cost:"
-        label-for="input-3"
+        label-for="input-4"
       >
         <b-form-input
-          id="input-3"
+          id="input-4"
           v-model="form.cost"
           type="number"
           required
@@ -109,6 +109,7 @@ export default {
       let options = {
         method: 'PUT',
         headers: {
+          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
           'content-type': 'application/json'
         },
         body: JSON.stringify(this.form)

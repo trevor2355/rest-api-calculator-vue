@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import store from '../store'
 // import AdminUsersBalance from '../views/adminViews/AdminUsersBalance.vue';
 // import AdminUsersManage from '../views/adminViews/AdminUsersManage.vue';
 
@@ -141,7 +140,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAdminAuth) {
     //send to admin login screen
     if (!JSON.parse(localStorage.getItem('adminUser'))) {
-      console.log('store: ', store)
       next({
         name: "adminLogin"
       })

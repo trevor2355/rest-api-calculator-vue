@@ -50,7 +50,7 @@
       </div>
       <div>
         <h3>square root</h3>
-        <p>Cost: {{ 'square-root' | findCostOfService(services) }}</p>
+        <p>Cost: {{ 'square_root' | findCostOfService(services) }}</p>
         <label for="val1"></label>
         <input v-model="squareRootVal" type="number" name="squareRootVal" class="input">
         <b-button @click="squareRoot" :disabled='squareRootDisabled'>Request Service</b-button>
@@ -58,7 +58,7 @@
       </div>
       <div>
         <h3>Random String</h3>
-        <p>Cost: {{ 'random string generator' | findCostOfService(services) }}</p>
+        <p>Cost: {{ 'random_string' | findCostOfService(services) }}</p>
         <label for="val1">Length (1-32)</label>
         <input v-model="generateRandomStringVal" type="number" name="generateRandomStringVal" class="input">
         <b-button @click="generateRandomString" :disabled='randomStringGeneratorDisabled'>Request Service</b-button>
@@ -111,11 +111,19 @@ export default {
   },
   methods: {
     getServices() {
-      fetch('http://localhost:3000/api/services')
+      let options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+        }
+      }
+      fetch('http://localhost:3000/api/services', options)
         .then(response => {
           return response.json()
         })
         .then(services => {
+          console.log('services: ', services)
           this.services = services;
         })
         .catch(err => {
@@ -126,7 +134,8 @@ export default {
       let options = {
         method: 'PUT',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
         },
         body: JSON.stringify(updateObject)
       }
@@ -135,7 +144,14 @@ export default {
       return data;
     },
     async getUser() {
-      let response = await fetch(`http://localhost:3000/api/users/${store.user.id}`)
+      let options = {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+        }
+      }
+      let response = await fetch(`http://localhost:3000/api/users/${store.user.id}`, options)
       let user = await response.json();
       return user[0];
     },
@@ -143,7 +159,8 @@ export default {
       let options = {
         method: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
         },
         body: JSON.stringify(record)
       }
@@ -169,14 +186,15 @@ export default {
     },
     squareRoot() {
       this.squareRootResult = Math.sqrt(parseFloat(this.squareRootVal));
-      this.handleServiceRequest('square-root', this.squareRootResult);
+      this.handleServiceRequest('square_root', this.squareRootResult);
     },
     generateRandomString() {
       let length = this.generateRandomStringVal;
       let options = {
         method: 'POST',
         headers: {
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
         },
         body: JSON.stringify({ length })
       }
@@ -189,7 +207,7 @@ export default {
         })
         .then(string => {
           this.randomStringGeneratorResult = string.string
-          this.handleServiceRequest('random string generator', this.randomStringGeneratorResult);
+          this.handleServiceRequest('random_string', this.randomStringGeneratorResult);
         })
         .catch(err => {
           console.log(err)
@@ -238,9 +256,10 @@ export default {
   },
   filters: {
     findCostOfService(serviceName, services) {
+
       if (services) {
-      let matchedService = services.filter(service => service.type === serviceName);
-      return matchedService[0].cost
+        let matchedService = services.filter(service => service.type === serviceName);
+        return matchedService[0].cost 
       } else {
         return 'cost not available'
       }
