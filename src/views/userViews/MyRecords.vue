@@ -154,7 +154,7 @@ export default {
           Authorization: JSON.parse(localStorage.getItem("JSWT"))
         }
       };
-      fetch(`http://localhost:3000/api/users/${this.userId}/records`, options)
+      fetch(`${this.$hostname}/api/users/${this.userId}/records`, options)
         .then(response => {
           return response.json();
         })
@@ -175,7 +175,7 @@ export default {
           Authorization: JSON.parse(localStorage.getItem("JSWT"))
         }
       };
-      fetch("http://localhost:3000/api/services", options)
+      fetch(`${this.$hostname}/api/services`, options)
         .then(response => {
           return response.json();
         })

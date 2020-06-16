@@ -37,7 +37,7 @@ export default {
           admin: true
         })
       };
-      fetch("http://localhost:3000/login", options)
+      fetch(`${this.$hostname}/login`, options)
         .then(response => {
           if (response.status !== 200) {
             this.loginFailed = true;

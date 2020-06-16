@@ -36,7 +36,7 @@ export default {
         }
       };
       let response = await fetch(
-        `http://localhost:3000/api/${this.entity}s/${this.recordId}`,
+        `${this.$hostname}/api/${this.entity}s/${this.recordId}`,
         options
       );
       let update = await response.json();

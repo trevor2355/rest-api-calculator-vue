@@ -142,7 +142,7 @@ export default {
         body: JSON.stringify(this.form)
       };
       let response = await fetch(
-        `http://localhost:3000/api/records/${this.form.id}`,
+        `${this.$hostname}/api/records/${this.form.id}`,
         options
       );
       let update = await response.json();

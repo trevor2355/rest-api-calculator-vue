@@ -106,7 +106,7 @@ export default {
         body: JSON.stringify(this.form)
       };
       let response = await fetch(
-        `http://localhost:3000/api/${this.entity}s`,
+        `${this.$hostname}/api/${this.entity}s`,
         options
       );
       let update = await response.json();

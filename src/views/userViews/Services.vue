@@ -184,6 +184,7 @@ export default {
   },
   created() {
     this.getServices();
+    console.log('host: ', this.$hostname)
   },
   methods: {
     getServices() {
@@ -194,7 +195,7 @@ export default {
           Authorization: JSON.parse(localStorage.getItem("JSWT"))
         }
       };
-      fetch("http://localhost:3000/api/services", options)
+      fetch(`${this.$hostname}/api/services`, options)
         .then(response => {
           return response.json();
         })
@@ -215,7 +216,7 @@ export default {
         body: JSON.stringify(updateObject)
       };
       let response = await fetch(
-        `http://localhost:3000/api/users/${store.user.id}`,
+        `${this.$hostname}/api/users/${store.user.id}`,
         options
       );
       let data = await response.json();
@@ -230,7 +231,7 @@ export default {
         }
       };
       let response = await fetch(
-        `http://localhost:3000/api/users/${store.user.id}`,
+        `${this.$hostname}/api/users/${store.user.id}`,
         options
       );
       let user = await response.json();
@@ -245,7 +246,7 @@ export default {
         },
         body: JSON.stringify(record)
       };
-      let response = await fetch(`http://localhost:3000/api/records`, options);
+      let response = await fetch(`${this.$hostname}/api/records`, options);
       let insertedRecord = await response.json();
       return insertedRecord;
     },
@@ -284,7 +285,7 @@ export default {
         },
         body: JSON.stringify({ length })
       };
-      fetch("http://localhost:3000/api/services/randomstringgenerator", options)
+      fetch(`${this.$hostname}/api/services/randomstringgenerator`, options)
         .then(response => {
           if (response.status !== 200) {
             throw new Error("Length not within valid range");

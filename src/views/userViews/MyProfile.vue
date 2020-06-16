@@ -36,7 +36,7 @@ export default {
           Authorization: JSON.parse(localStorage.getItem("JSWT"))
         }
       };
-      fetch(`http://localhost:3000/api/users/${this.userId}`, options)
+      fetch(`${this.$hostname}/api/users/${this.userId}`, options)
         .then(response => {
           return response.json();
         })

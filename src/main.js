@@ -9,7 +9,12 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
+//this can be changed to the public url once deployed
+Vue.prototype.$hostname = 'http://localhost:3000'
+
 new Vue({
   router,
   render: h => h(App)
 }).$mount("#app");
+
+

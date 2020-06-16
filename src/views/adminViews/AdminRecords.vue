@@ -148,7 +148,7 @@ export default {
           "Content-Type": "application/json"
         }
       };
-      fetch("http://localhost:3000/api/records", options)
+      fetch(`${this.$hostname}/api/records`, options)
         .then(response => {
           return response.json();
         })

@@ -120,7 +120,7 @@ export default {
           "Content-Type": "application/json"
         }
       };
-      fetch("http://localhost:3000/api/users", options)
+      fetch(`${this.$hostname}/api/users`, options)
         .then(response => {
           return response.json();
         })
