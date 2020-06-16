@@ -199,7 +199,6 @@ export default {
           return response.json();
         })
         .then(services => {
-          console.log("services: ", services);
           this.services = services;
         })
         .catch(err => {

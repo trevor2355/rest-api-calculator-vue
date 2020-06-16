@@ -47,7 +47,6 @@ export default {
         })
         .then(userInfo => {
           store.user = userInfo.user;
-          console.log("userInfo: ", userInfo);
           localStorage.setItem("user", JSON.stringify(userInfo.user));
           localStorage.setItem("JSWT", JSON.stringify(userInfo.token));
           this.$router.push(`/user/${userInfo.user.id}/profile`);

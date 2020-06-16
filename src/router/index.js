@@ -172,6 +172,8 @@ const router = new VueRouter({
   routes
 });
 
+//Check if admin or user credentials is needed to access certain routes
+
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAdminAuth) {
     //send to admin login screen
