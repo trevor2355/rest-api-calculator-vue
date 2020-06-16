@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>My Profile</h1>
-    <div class='line'></div>
+    <div class="line"></div>
     <ul>
       <li>Username (email): {{ user.username }}</li>
       <li>Balance: {{ user.balance }}</li>
@@ -11,12 +11,12 @@
   </div>
 </template>
 <script>
-import store from '@/store.js';
+import store from "@/store.js";
 export default {
   data() {
     return {
       user: store.user
-    }
+    };
   },
   props: {
     userId: {
@@ -25,30 +25,30 @@ export default {
     }
   },
   created() {
-    this.getUser()
+    this.getUser();
   },
   methods: {
     getUser() {
       let options = {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': JSON.parse(localStorage.getItem('JSWT'))
+          "Content-Type": "application/json",
+          Authorization: JSON.parse(localStorage.getItem("JSWT"))
         }
-      }
+      };
       fetch(`http://localhost:3000/api/users/${this.userId}`, options)
         .then(response => {
-          return response.json()
+          return response.json();
         })
         .then(user => {
-          store.user = user[0]
+          store.user = user[0];
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     }
   }
-}
+};
 </script>
 <style scoped>
 ul {

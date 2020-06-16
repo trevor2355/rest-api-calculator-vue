@@ -1,19 +1,19 @@
-let savedUserInfo = JSON.parse(localStorage.getItem('user'));
+let savedUserInfo = JSON.parse(localStorage.getItem("user"));
 if (!savedUserInfo) {
   savedUserInfo = {
-    username: ''
-  }
+    username: ""
+  };
 }
 
-let savedAdminUserInfo = JSON.parse(localStorage.getItem('adminUser'));
+let savedAdminUserInfo = JSON.parse(localStorage.getItem("adminUser"));
 if (!savedUserInfo) {
   savedUserInfo = {
-    username: ''
-  }
+    username: ""
+  };
 }
 
 export default {
   user: savedUserInfo,
   adminUser: savedAdminUserInfo,
   username: null
-}
+};

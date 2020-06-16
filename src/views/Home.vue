@@ -1,8 +1,16 @@
 <template>
   <div class="home">
     <h1>Rest API Calculator</h1>
-    <b-button :to="{ name: 'adminUsersManage' }" variant='danger' class='button' size='lg'>Admin Login</b-button>
-    <b-button to="/user" variant='success' class='button' size='lg'>User Login</b-button>
+    <b-button
+      :to="{ name: 'adminUsersManage' }"
+      variant="danger"
+      class="button"
+      size="lg"
+      >Admin Login</b-button
+    >
+    <b-button to="/user" variant="success" class="button" size="lg"
+      >User Login</b-button
+    >
   </div>
 </template>
 
@@ -11,17 +19,17 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
+  name: "Home"
   // components: {
   //   HelloWorld
   // }
-}
+};
 </script>
 <style scoped>
-  .home {
-    padding-top: 150px;
-  }
-  .button {
-    margin: 50px;
-  }
+.home {
+  padding-top: 150px;
+}
+.button {
+  margin: 50px;
+}
 </style>

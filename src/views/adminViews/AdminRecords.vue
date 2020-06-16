@@ -1,8 +1,8 @@
 <template>
   <div>
     <h2>Records</h2>
-    <div class='flex-container'>
-      <div class='flex-item'>
+    <div class="flex-container">
+      <div class="flex-item">
         <b-form-group
           label="Filter"
           label-cols-sm="1"
@@ -26,14 +26,20 @@
           label-align-sm="right"
           label-size="sm"
           description="Leave all unchecked to filter on all data"
-          class="mb-0">
+          class="mb-0"
+        >
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
-            <b-form-checkbox v-for='field in fieldsWithoutActions' :key='field.key' :value='field.key'>{{ field.label }}</b-form-checkbox>
+            <b-form-checkbox
+              v-for="field in fieldsWithoutActions"
+              :key="field.key"
+              :value="field.key"
+              >{{ field.label }}</b-form-checkbox
+            >
           </b-form-checkbox-group>
         </b-form-group>
       </div>
-      <div class='flex-item'>
-        <div class='select'>
+      <div class="flex-item">
+        <div class="select">
           <b-form-group
             label="Per page"
             label-size="sm"
@@ -54,22 +60,32 @@
           v-model="currentPage"
           :total-rows="totalRows"
           :per-page="perPage"
-          aria-controls="my-records-table" 
+          aria-controls="my-records-table"
           align="fill"
         ></b-pagination>
       </div>
     </div>
-    <TheRecordsTable :records='records' :key='key' @get-all-records='getAllRecords' :currentPage="currentPage" :perPage="perPage" :filter="filter" :filterIncludedFields="filterOn" @filtered="onFiltered" :fields='fields'></TheRecordsTable>
+    <TheRecordsTable
+      :records="records"
+      :key="key"
+      @get-all-records="getAllRecords"
+      :currentPage="currentPage"
+      :perPage="perPage"
+      :filter="filter"
+      :filterIncludedFields="filterOn"
+      @filtered="onFiltered"
+      :fields="fields"
+    ></TheRecordsTable>
   </div>
 </template>
 <script>
-import moment from 'moment';
-import TheRecordsTable from '../../components/TheRecordsTable.vue';
+import moment from "moment";
+import TheRecordsTable from "../../components/TheRecordsTable.vue";
 export default {
   data() {
     return {
       records: null,
-      key: '1',
+      key: "1",
       totalRows: 1,
       currentPage: 1,
       perPage: 5,
@@ -77,83 +93,101 @@ export default {
       filter: null,
       filterOn: [],
       fields: [
-        { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-        { key: 'uuid', label: 'UUID', sortable: true, class: 'text-center' },
-        { key: 'service_id', label: 'Service ID', sortable: true,
+        { key: "id", label: "ID", sortable: true, sortDirection: "desc" },
+        { key: "uuid", label: "UUID", sortable: true, class: "text-center" },
+        {
+          key: "service_id",
+          label: "Service ID",
+          sortable: true
           // sortByFormatted: true,
           // filterByFormatted: true
         },
-        { key: 'user_id', label: 'User ID', sortable: true, sortDirection: 'desc' },
-        { key: 'cost', label: 'Cost', sortable: true, sortDirection: 'desc' },
-        { key: 'user_balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
-        { key: 'service_response', label: 'Service Response', sortable: true, sortDirection: 'desc' },
-        { 
-          key: 'date', 
-          label: 'Date', 
-          sortable: true, 
-          sortDirection: 'desc',
-          formatter: (value) => {
-          return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss")
+        {
+          key: "user_id",
+          label: "User ID",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        { key: "cost", label: "Cost", sortable: true, sortDirection: "desc" },
+        {
+          key: "user_balance",
+          label: "User Balance",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "service_response",
+          label: "Service Response",
+          sortable: true,
+          sortDirection: "desc"
+        },
+        {
+          key: "date",
+          label: "Date",
+          sortable: true,
+          sortDirection: "desc",
+          formatter: value => {
+            return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss");
           },
           sortByFormatted: true,
           filterByFormatted: true
         },
-        { key: 'actions', label: 'Actions' }
-      ],
-    }
+        { key: "actions", label: "Actions" }
+      ]
+    };
   },
   created() {
-    this.getAllRecords()
+    this.getAllRecords();
   },
   methods: {
     getAllRecords() {
       let options = {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Authorization': JSON.parse(localStorage.getItem('JSWT')),
-          'Content-Type': 'application/json'
+          Authorization: JSON.parse(localStorage.getItem("JSWT")),
+          "Content-Type": "application/json"
         }
-      }
-      fetch('http://localhost:3000/api/records', options)
+      };
+      fetch("http://localhost:3000/api/records", options)
         .then(response => {
-          return response.json()
+          return response.json();
         })
         .then(records => {
           records.forEach(record => {
-            delete record.createdAt
-            delete record.updatedAt
-          })
+            delete record.createdAt;
+            delete record.updatedAt;
+          });
           this.records = records;
-          this.totalRows = records.length
+          this.totalRows = records.length;
           this.key = new Date().toString();
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
   components: {
     TheRecordsTable
   },
   computed: {
-    fieldsWithoutActions: function () {
+    fieldsWithoutActions: function() {
       let fieldsWithoutActions = this.fields.slice(0, this.fields.length - 1);
-      return fieldsWithoutActions
+      return fieldsWithoutActions;
     }
   }
-}
+};
 </script>
 <style>
 h1 {
-  padding: 8px 0
+  padding: 8px 0;
 }
 h2 {
-  margin: 16px
+  margin: 16px;
 }
 .flex-container {
   display: grid;
@@ -161,5 +195,4 @@ h2 {
   column-gap: 80px;
   margin: 0 88px;
 }
-
 </style>

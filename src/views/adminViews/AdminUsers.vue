@@ -1,39 +1,42 @@
 <template>
-<div>
-  <div class=buttons>
-  <span class='button'>
-  <b-button 
-    :to="{
-        name: 'adminUsersManage',
-      }"
-    variant='outline-secondary' 
-    sz='lg' 
-    exact exact-active-class="active">
-      Manage Users
-  </b-button>
-  </span>
-  <span class='button'>
-  <b-button 
-    :to="{
-      name: 'adminUsersBalance',
-    }"
-    variant='outline-secondary' 
-    sz='lg' 
-    exact exact-active-class="active">
-      Manage User Balances
-  </b-button>
-  </span>
+  <div>
+    <div class="buttons">
+      <span class="button">
+        <b-button
+          :to="{
+            name: 'adminUsersManage'
+          }"
+          variant="outline-secondary"
+          sz="lg"
+          exact
+          exact-active-class="active"
+        >
+          Manage Users
+        </b-button>
+      </span>
+      <span class="button">
+        <b-button
+          :to="{
+            name: 'adminUsersBalance'
+          }"
+          variant="outline-secondary"
+          sz="lg"
+          exact
+          exact-active-class="active"
+        >
+          Manage User Balances
+        </b-button>
+      </span>
+    </div>
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
-</div>
 </template>
 <script>
 export default {
   data() {
-    return {
-    }
+    return {};
   }
-}
+};
 </script>
 <style scoped>
 .button {
