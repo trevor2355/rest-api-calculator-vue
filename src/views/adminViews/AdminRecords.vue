@@ -59,12 +59,12 @@
         ></b-pagination>
       </div>
     </div>
-    <TheDataTable :records='records' :key='key' @get-all-records='getAllRecords' :currentPage="currentPage" :perPage="perPage" :filter="filter" :filterIncludedFields="filterOn" @filtered="onFiltered" :fields='fields'></TheDataTable>
+    <TheRecordsTable :records='records' :key='key' @get-all-records='getAllRecords' :currentPage="currentPage" :perPage="perPage" :filter="filter" :filterIncludedFields="filterOn" @filtered="onFiltered" :fields='fields'></TheRecordsTable>
   </div>
 </template>
 <script>
 import moment from 'moment';
-import TheDataTable from '../../components/TheDataTable.vue';
+import TheRecordsTable from '../../components/TheRecordsTable.vue';
 export default {
   data() {
     return {
@@ -138,7 +138,7 @@ export default {
     }
   },
   components: {
-    TheDataTable
+    TheRecordsTable
   },
   computed: {
     fieldsWithoutActions: function () {

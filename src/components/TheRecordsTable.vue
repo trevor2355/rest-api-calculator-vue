@@ -14,12 +14,12 @@
         </div>
       </template>
     </b-table>
-    <TheEditModal :infoModal="infoModal" :key="infoModal.id" @reset-infoModal="resetInfoModal" @get-all-records='getAllRecords'/>
+    <TheEditRecordModal :infoModal="infoModal" :key="infoModal.id" @reset-infoModal="resetInfoModal" @get-all-records='getAllRecords'/>
     <TheDeleteModal key='deleteModal' :recordId='deleteRecordId' :username='deleteRecordId' :entity='entity' @get-all-records='getAllRecords'/>
   </b-container>
 </template>
 <script>
-import TheEditModal from './TheEditModal.vue'
+import TheEditRecordModal from './TheEditRecordModal.vue'
 import TheDeleteModal from './TheDeleteModal.vue'
 export default {
   data() {
@@ -68,7 +68,7 @@ export default {
     }
   },
   components: {
-    TheEditModal,
+    TheEditRecordModal,
     TheDeleteModal
   }
 };

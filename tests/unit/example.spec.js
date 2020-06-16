@@ -1,12 +1,19 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Services from '@/views/userViews/Services.vue'
+require('jest-fetch-mock').enableMocks()
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
+describe('Services.vue', () => {
+  it('add function works properly', () => {
+    let data = {
+      addVal1: 5,
+      addVal2: 6,
+      additionResult: null
+    }
+    const wrapper = shallowMount(Services, {
+      propsData: data
     })
-    expect(wrapper.text()).toMatch(msg)
+    wrapper.vm.add()
+    console.log('wrapper: ', wrapper)
+    expect(wrapper.vm.additionResult).toBe(11)
   })
 })

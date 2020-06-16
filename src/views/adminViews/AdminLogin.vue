@@ -1,5 +1,6 @@
 <template>
   <div class='login'>
+    <p class='back' @click='back'>Back</p>
     <h2>Admin Login</h2>
     <div class='form'>
       <label for="username">Username (email)</label>
@@ -7,6 +8,7 @@
       <label for="password">Password</label>
       <input v-model="password" type="text" name="password" class="input">
       <b-button @click="login" variant='danger' class='button'>Login</b-button>
+      <p class='failedLogin' v-if="loginFailed">Incorrect Username or Password</p>
     </div>
   </div>
 </template>
@@ -16,7 +18,8 @@ export default {
   data() {
     return {
       username: null,
-      password: null
+      password: null,
+      loginFailed: false
     };
   },
   methods: {
@@ -31,6 +34,7 @@ export default {
       fetch('http://localhost:3000/login', options)
         .then(response => {
           if (response.status !== 200) {
+            this.loginFailed = true;
             throw new Error();
           }
           return response.json()
@@ -44,6 +48,9 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    back() {
+      this.$router.push(`/`)
     }
   }
 }
@@ -60,5 +67,19 @@ label {
 }
 input {
   margin: 5px;
+}
+.failedLogin {
+  font-size: 20px;
+  color: darkred;
+}
+.back {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  text-decoration: underline;
+}
+.back:hover {
+  cursor: pointer;
+  color: darkblue
 }
 </style>
