@@ -184,7 +184,7 @@ export default {
   },
   created() {
     this.getServices();
-    console.log('host: ', this.$hostname)
+    console.log("host: ", this.$hostname);
   },
   methods: {
     getServices() {
