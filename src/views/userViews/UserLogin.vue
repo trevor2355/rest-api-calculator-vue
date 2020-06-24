@@ -6,7 +6,7 @@
       <label for="username">Username (email): </label>
       <input v-model="username" type="text" name="username" class="input" />
       <label for="password">Password: </label>
-      <input v-model="password" type="text" name="password" class="input" />
+      <input v-model="password" type="password" name="password" class="input" />
       <b-button @click="login" variant="success" class="button">Login</b-button>
       <p class="failedLogin" v-if="loginFailed">
         Incorrect Username or Password
@@ -37,7 +37,7 @@ export default {
           admin: false
         })
       };
-      fetch(`${this.$hostname}/login`, options)
+      fetch(`${this.$hostname}/api/login`, options)
         .then(response => {
           if (response.status !== 200) {
             this.loginFailed = true;
