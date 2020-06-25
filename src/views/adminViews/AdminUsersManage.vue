@@ -24,6 +24,7 @@
               type="search"
               id="filterInput"
               placeholder="Type to Search"
+              @input.native="handleChangeToRequest"
             ></b-form-input>
           </b-input-group>
         </b-form-group>
@@ -40,12 +41,44 @@
               v-for="field in fieldsWithoutActions"
               :key="field.key"
               :value="field.key"
+              @input.native="handleChangeToRequest"
               >{{ field.label }}</b-form-checkbox
             >
           </b-form-checkbox-group>
         </b-form-group>
       </div>
       <div class="flex-item">
+        <div class="sort">
+          <b-form-group
+            label="Sort by"
+            label-cols-sm="1"
+            label-align-sm="right"
+            label-size="sm"
+            label-for="filterInput"
+            class="mb-0"
+          >
+            <b-form-select
+              v-model="sortBy"
+              id="sortBySelect"
+              :options="sortByOptions"
+              @input.native="handleChangeToRequest"
+            ></b-form-select>
+            <b-form-checkbox
+              v-model="sortOrderAsc"
+              @input.native="handleSortOrderChange"
+              inline
+            >
+              Ascending
+            </b-form-checkbox>
+            <b-form-checkbox
+              v-model="sortOrderDesc"
+              @input.native="handleSortOrderChange"
+              inline
+            >
+              Descending
+            </b-form-checkbox>
+          </b-form-group>
+        </div>
         <div class="select">
           <b-form-group
             label="Per page"
@@ -60,6 +93,7 @@
               v-model="perPage"
               id="perPageSelect"
               :options="pageOptions"
+              @input.native="handleChangeToRequest"
             ></b-form-select>
           </b-form-group>
         </div>
@@ -69,6 +103,7 @@
           :per-page="perPage"
           aria-controls="my-records-table"
           align="fill"
+          @change="handleChangeToRequest"
         ></b-pagination>
       </div>
     </div>
@@ -76,16 +111,11 @@
       :users="users"
       :key="key"
       @get-all-users="getAllUsers"
-      :currentPage="currentPage"
-      :perPage="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterOn"
-      @filtered="onFiltered"
       :fields="fields"
     ></TheUserManageTable>
     <TheAddUserModal
       key="addUserModal"
-      :id="key"
+      :id="addUserModalKey"
       :entity="entity"
       @get-all-users="getAllUsers"
     />
@@ -99,6 +129,7 @@ export default {
     return {
       users: null,
       key: "1",
+      addUserModalKey: "1",
       entity: "user",
       totalRows: 1,
       currentPage: 1,
@@ -106,32 +137,27 @@ export default {
       pageOptions: [5, 10, 15],
       filter: null,
       filterOn: [],
+      sortBy: "ID",
+      sortOrderAsc: true,
+      sortOrderDesc: false,
       fields: [
-        { key: "id", label: "ID", sortable: true, sortDirection: "desc" },
-        { key: "uuid", label: "UUID", sortable: true, sortDirection: "desc" },
+        { key: "id", label: "ID" },
+        { key: "uuid", label: "UUID" },
         {
           key: "username",
-          label: "Email",
-          sortable: true,
-          sortDirection: "desc"
+          label: "Email"
         },
         {
           key: "balance",
-          label: "User Balance",
-          sortable: true,
-          sortDirection: "desc"
+          label: "User Balance"
         },
         {
           key: "role",
-          label: "User Role",
-          sortable: true,
-          sortDirection: "desc"
+          label: "User Role"
         },
         {
           key: "status",
-          label: "User Status",
-          sortable: true,
-          sortDirection: "desc"
+          label: "User Status"
         },
         { key: "actions", label: "Actions" }
       ]
@@ -142,6 +168,7 @@ export default {
   },
   methods: {
     getAllUsers() {
+      let url = this.createUrl();
       let options = {
         method: "GET",
         headers: {
@@ -149,26 +176,60 @@ export default {
           "Content-Type": "application/json"
         }
       };
-      fetch(`${this.$hostname}/api/users`, options)
+      fetch(url, options)
         .then(response => {
           return response.json();
         })
         .then(users => {
-          this.users = users;
-          this.key = new Date().toString();
-          this.totalRows = this.users.length;
+          this.users = users.rows;
+          this.totalRows = users.count;
+          this.key = new Date().getTime();
         })
         .catch(err => {
           console.log(err);
         });
     },
     openAddUserModal() {
-      this.$bvModal.show(this.key);
+      this.$bvModal.show(this.addUserModalKey);
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    handleChangeToRequest() {
+      let that = this;
+      setTimeout(function() {
+        that.getAllUsers();
+      }, 25);
+    },
+    handleSortOrderChange() {
+      this.sortOrderAsc = !this.sortOrderAsc;
+      this.sortOrderDesc = !this.sortOrderDesc;
+      this.handleChangeToRequest();
+    },
+    createUrl() {
+      let url = `${this.$hostname}/api/users?page=${this.currentPage -
+        1}&pageSize=${this.perPage}`;
+      if (this.filter) {
+        url += `&searchTerm=${this.filter}`;
+      }
+      if (this.filterOn.length > 0) {
+        for (let i = 0; i < this.filterOn.length; i++) {
+          url += `&filterField${i + 1}=${this.filterOn[i]}`;
+        }
+      }
+      url += `&sortBy=${this.convertSortLabel(this.sortBy)}`;
+      if (this.sortOrderAsc) {
+        url += `&order=ASC`;
+      } else if (this.sortOrderDesc) {
+        url += `&order=DESC`;
+      }
+      return url;
+    },
+    convertSortLabel(sortBy) {
+      let field = this.fields.filter(field => field.label === sortBy);
+      return field[0].key;
     }
   },
   components: {
@@ -179,6 +240,9 @@ export default {
     fieldsWithoutActions: function() {
       let fieldsWithoutActions = this.fields.slice(0, this.fields.length - 1);
       return fieldsWithoutActions;
+    },
+    sortByOptions: function() {
+      return this.fieldsWithoutActions.map(field => field.label);
     }
   }
 };
@@ -195,5 +259,11 @@ h2 {
   grid-template-columns: 2fr 1fr;
   column-gap: 80px;
   margin: 0 88px;
+}
+.flex-item {
+  align-self: center;
+}
+.sort {
+  padding: 16px;
 }
 </style>

@@ -1,16 +1,6 @@
 <template>
   <b-container>
-    <b-table
-      striped
-      hover
-      :items="items"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterIncludedFields"
-      @filtered="onFiltered"
-    >
+    <b-table striped hover :items="items" :fields="fields">
       <template v-slot:cell(actions)="row">
         <div class="edit-button">
           <b-button
@@ -63,14 +53,7 @@ export default {
       entity: "record"
     };
   },
-  props: [
-    "records",
-    "fields",
-    "perPage",
-    "currentPage",
-    "filter",
-    "filterIncludedFields"
-  ],
+  props: ["records", "fields"],
   methods: {
     info(item, index, button) {
       index;
@@ -95,9 +78,6 @@ export default {
     },
     getAllRecords() {
       this.$emit("get-all-records");
-    },
-    onFiltered(filteredItems) {
-      this.$emit("filtered", filteredItems);
     }
   },
   components: {

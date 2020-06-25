@@ -63,8 +63,8 @@ export default {
 <style scoped>
 .logout {
   position: absolute;
-  top: 40px;
-  right: 0px;
+  top: 44px;
+  right: 16px;
 }
 .user {
   font-size: 16px;

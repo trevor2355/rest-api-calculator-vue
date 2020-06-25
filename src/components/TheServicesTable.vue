@@ -1,16 +1,6 @@
 <template>
   <b-container>
-    <b-table
-      striped
-      hover
-      :items="items"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterIncludedFields"
-      @filtered="onFiltered"
-    >
+    <b-table striped hover :items="items" :fields="fields">
       <template v-slot:cell(actions)="row">
         <div class="edit-button">
           <b-button size="sm" @click="edit(row.item)" variant="success">
@@ -60,14 +50,7 @@ export default {
       deleteType: null
     };
   },
-  props: [
-    "services",
-    "fields",
-    "perPage",
-    "currentPage",
-    "filter",
-    "filterIncludedFields"
-  ],
+  props: ["services", "fields"],
   methods: {
     edit(item) {
       this.editModal.id = item.id.toString();
@@ -93,9 +76,6 @@ export default {
     },
     getAllServices() {
       this.$emit("get-all-services");
-    },
-    onFiltered(filteredItems) {
-      this.$emit("filtered", filteredItems);
     }
   },
   components: {

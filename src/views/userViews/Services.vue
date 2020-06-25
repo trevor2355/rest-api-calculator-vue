@@ -254,7 +254,6 @@ export default {
   },
   created() {
     this.getServices();
-    console.log("host: ", this.$hostname);
   },
   methods: {
     getServices() {
@@ -270,7 +269,7 @@ export default {
           return response.json();
         })
         .then(services => {
-          this.services = services;
+          this.services = services.rows;
         })
         .catch(err => {
           console.log(err);

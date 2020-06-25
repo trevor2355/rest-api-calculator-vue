@@ -13,7 +13,6 @@ describe("Services.vue", () => {
       propsData: data
     });
     wrapper.vm.add();
-    console.log("wrapper: ", wrapper);
     expect(wrapper.vm.additionResult).toBe(11);
   });
 });

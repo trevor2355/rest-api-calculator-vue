@@ -6,11 +6,6 @@
       hover
       :items="items"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterIncludedFields"
-      @filtered="onFiltered"
     >
     </b-table>
   </b-container>
@@ -23,19 +18,7 @@ export default {
       items: this.records
     };
   },
-  props: [
-    "records",
-    "fields",
-    "perPage",
-    "currentPage",
-    "filter",
-    "filterIncludedFields"
-  ],
-  methods: {
-    onFiltered(filteredItems) {
-      this.$emit("filtered", filteredItems);
-    }
-  }
+  props: ["records", "fields"]
 };
 </script>
 <style></style>

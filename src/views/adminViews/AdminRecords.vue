@@ -17,6 +17,7 @@
               type="search"
               id="filterInput"
               placeholder="Type to Search"
+              @input.native="handleChangeToRequest"
             ></b-form-input>
           </b-input-group>
         </b-form-group>
@@ -33,12 +34,44 @@
               v-for="field in fieldsWithoutActions"
               :key="field.key"
               :value="field.key"
+              @input.native="handleChangeToRequest"
               >{{ field.label }}</b-form-checkbox
             >
           </b-form-checkbox-group>
         </b-form-group>
       </div>
       <div class="flex-item">
+        <div class="sort">
+          <b-form-group
+            label="Sort by"
+            label-cols-sm="1"
+            label-align-sm="right"
+            label-size="sm"
+            label-for="filterInput"
+            class="mb-0"
+          >
+            <b-form-select
+              v-model="sortBy"
+              id="sortBySelect"
+              :options="sortByOptions"
+              @input.native="handleChangeToRequest"
+            ></b-form-select>
+            <b-form-checkbox
+              v-model="sortOrderAsc"
+              @input.native="handleSortOrderChange"
+              inline
+            >
+              Ascending
+            </b-form-checkbox>
+            <b-form-checkbox
+              v-model="sortOrderDesc"
+              @input.native="handleSortOrderChange"
+              inline
+            >
+              Descending
+            </b-form-checkbox>
+          </b-form-group>
+        </div>
         <div class="select">
           <b-form-group
             label="Per page"
@@ -53,6 +86,7 @@
               v-model="perPage"
               id="perPageSelect"
               :options="pageOptions"
+              @input.native="handleChangeToRequest"
             ></b-form-select>
           </b-form-group>
         </div>
@@ -62,6 +96,7 @@
           :per-page="perPage"
           aria-controls="my-records-table"
           align="fill"
+          @change="handleChangeToRequest"
         ></b-pagination>
       </div>
     </div>
@@ -69,11 +104,6 @@
       :records="records"
       :key="key"
       @get-all-records="getAllRecords"
-      :currentPage="currentPage"
-      :perPage="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterOn"
-      @filtered="onFiltered"
       :fields="fields"
     ></TheRecordsTable>
   </div>
@@ -92,45 +122,35 @@ export default {
       pageOptions: [5, 10, 15],
       filter: null,
       filterOn: [],
+      sortBy: "ID",
+      sortOrderAsc: true,
+      sortOrderDesc: false,
       fields: [
-        { key: "id", label: "ID", sortable: true, sortDirection: "desc" },
-        { key: "uuid", label: "UUID", sortable: true, class: "text-center" },
+        { key: "id", label: "ID" },
+        { key: "uuid", label: "UUID", class: "text-center" },
         {
           key: "service_id",
-          label: "Service ID",
-          sortable: true
-          // sortByFormatted: true,
-          // filterByFormatted: true
+          label: "Service ID"
         },
         {
           key: "user_id",
-          label: "User ID",
-          sortable: true,
-          sortDirection: "desc"
+          label: "User ID"
         },
-        { key: "cost", label: "Cost", sortable: true, sortDirection: "desc" },
+        { key: "cost", label: "Cost" },
         {
           key: "user_balance",
-          label: "User Balance",
-          sortable: true,
-          sortDirection: "desc"
+          label: "User Balance"
         },
         {
           key: "service_response",
-          label: "Service Response",
-          sortable: true,
-          sortDirection: "desc"
+          label: "Service Response"
         },
         {
           key: "date",
           label: "Date",
-          sortable: true,
-          sortDirection: "desc",
           formatter: value => {
             return moment(value).format("dddd, MMMM Do YYYY, h:mm:ss");
-          },
-          sortByFormatted: true,
-          filterByFormatted: true
+          }
         },
         { key: "actions", label: "Actions" }
       ]
@@ -141,6 +161,7 @@ export default {
   },
   methods: {
     getAllRecords() {
+      let url = this.createUrl();
       let options = {
         method: "GET",
         headers: {
@@ -148,18 +169,18 @@ export default {
           "Content-Type": "application/json"
         }
       };
-      fetch(`${this.$hostname}/api/records`, options)
+      fetch(url, options)
         .then(response => {
           return response.json();
         })
         .then(records => {
-          records.forEach(record => {
+          records.rows.forEach(record => {
             delete record.createdAt;
             delete record.updatedAt;
           });
-          this.records = records;
-          this.totalRows = records.length;
-          this.key = new Date().toString();
+          this.records = records.rows;
+          this.totalRows = records.count;
+          this.key = new Date().getTime();
         })
         .catch(err => {
           console.log(err);
@@ -169,6 +190,40 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    handleChangeToRequest() {
+      let that = this;
+      setTimeout(function() {
+        that.getAllRecords();
+      }, 25);
+    },
+    handleSortOrderChange() {
+      this.sortOrderAsc = !this.sortOrderAsc;
+      this.sortOrderDesc = !this.sortOrderDesc;
+      this.handleChangeToRequest();
+    },
+    createUrl() {
+      let url = `${this.$hostname}/api/records?page=${this.currentPage -
+        1}&pageSize=${this.perPage}`;
+      if (this.filter) {
+        url += `&searchTerm=${this.filter}`;
+      }
+      if (this.filterOn.length > 0) {
+        for (let i = 0; i < this.filterOn.length; i++) {
+          url += `&filterField${i + 1}=${this.filterOn[i]}`;
+        }
+      }
+      url += `&sortBy=${this.convertSortLabel(this.sortBy)}`;
+      if (this.sortOrderAsc) {
+        url += `&order=ASC`;
+      } else if (this.sortOrderDesc) {
+        url += `&order=DESC`;
+      }
+      return url;
+    },
+    convertSortLabel(sortBy) {
+      let field = this.fields.filter(field => field.label === sortBy);
+      return field[0].key;
     }
   },
   components: {
@@ -178,6 +233,9 @@ export default {
     fieldsWithoutActions: function() {
       let fieldsWithoutActions = this.fields.slice(0, this.fields.length - 1);
       return fieldsWithoutActions;
+    },
+    sortByOptions: function() {
+      return this.fieldsWithoutActions.map(field => field.label);
     }
   }
 };
@@ -194,5 +252,11 @@ h2 {
   grid-template-columns: 2fr 1fr;
   column-gap: 80px;
   margin: 0 88px;
+}
+.flex-item {
+  align-self: center;
+}
+.sort {
+  padding: 16px;
 }
 </style>

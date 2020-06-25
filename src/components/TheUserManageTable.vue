@@ -1,16 +1,6 @@
 <template>
   <b-container>
-    <b-table
-      striped
-      hover
-      :items="items"
-      :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
-      :filter="filter"
-      :filterIncludedFields="filterIncludedFields"
-      @filtered="onFiltered"
-    >
+    <b-table striped hover :items="items" :fields="fields">
       <template v-slot:cell(actions)="row">
         <div class="edit-button">
           <b-button size="sm" @click="edit(row.item)" variant="success">
@@ -50,15 +40,6 @@ export default {
   data() {
     return {
       items: this.users,
-      // fields: [
-      //   { key: 'id', label: 'ID', sortable: true, sortDirection: 'desc' },
-      //   { key: 'uuid', label: 'UUID', sortable: true, sortDirection: 'desc' },
-      //   { key: 'username', label: 'Email', sortable: true, sortDirection: 'desc' },
-      //   { key: 'balance', label: 'User Balance', sortable: true, sortDirection: 'desc' },
-      //   { key: 'role', label: 'User Role', sortable: true, sortDirection: 'desc' },
-      //   { key: 'status', label: 'User Status', sortable: true, sortDirection: 'desc' },
-      //   { key: 'actions', label: 'Actions' }
-      // ],
       editModal: {
         id: "",
         title: "",
@@ -69,14 +50,7 @@ export default {
       deleteUsername: null
     };
   },
-  props: [
-    "users",
-    "fields",
-    "perPage",
-    "currentPage",
-    "filter",
-    "filterIncludedFields"
-  ],
+  props: ["users", "fields"],
   methods: {
     edit(item) {
       this.editModal.id = item.id.toString();
@@ -102,9 +76,6 @@ export default {
     },
     getAllUsers() {
       this.$emit("get-all-users");
-    },
-    onFiltered(filteredItems) {
-      this.$emit("filtered", filteredItems);
     }
   },
   components: {
