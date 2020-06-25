@@ -288,7 +288,7 @@ export default {
         options
       );
       let user = await response.json();
-      return user[0];
+      return user;
     },
     requestService(event) {
       let serviceId = event.target.id;

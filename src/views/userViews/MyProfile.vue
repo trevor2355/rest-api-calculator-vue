@@ -41,7 +41,7 @@ export default {
           return response.json();
         })
         .then(user => {
-          store.user = user[0];
+          store.user = user;
         })
         .catch(err => {
           console.log(err);
