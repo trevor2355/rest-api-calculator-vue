@@ -10,8 +10,8 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
 //this can be changed to the public url once deployed
-Vue.prototype.$hostname = "http://localhost:3000";
-// "http://ec2-54-183-229-163.us-west-1.compute.amazonaws.com"
+Vue.prototype.$hostname =
+  "http://ec2-54-183-229-163.us-west-1.compute.amazonaws.com";
 
 new Vue({
   router,
